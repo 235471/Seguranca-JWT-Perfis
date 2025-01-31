@@ -1,0 +1,449 @@
+openapi: 3.0.0
+info:
+  title: API de Gerenciamento
+  description: API para gerenciar usuários, roles, permissões e produtos.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /auth/login:
+    post:
+      summary: "Login do usuário"
+      description: "Realiza o login do usuário e retorna um token JWT."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: "O email do usuário."
+                senha:
+                  type: string
+                  description: "A senha do usuário."
+              required:
+                - email
+                - senha
+      responses:
+        '200':
+          description: "Login bem-sucedido, retorna o token JWT."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: "Token de acesso JWT."
+        '400':
+          description: "Requisição inválida, faltando dados ou dados inválidos."
+        '401':
+          description: "Credenciais inválidas, email ou senha incorretos."  
+  /usuarios:
+    post:
+      summary: Criar um novo usuário
+      security:
+        - bearerAuth: []
+      tags:
+        - Usuários
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+                senha:
+                  type: string
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Erro de validação
+    get:
+      summary: Listar todos os usuários
+      security:
+        - bearerAuth: []
+      tags:
+        - Usuários
+      responses:
+        '200':
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+  /usuarios/id/{id}:
+    get:
+      summary: Obter um usuário por ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Usuários
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuário não encontrado
+    put:
+      summary: Atualizar um usuário
+      security:
+        - bearerAuth: []
+      tags:
+        - Usuários
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Erro de validação
+        '404':
+          description: Usuário não encontrado
+    delete:
+      summary: Remover um usuário
+      security:
+        - bearerAuth: []
+      tags:
+        - Usuários
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuário removido com sucesso
+        '404':
+          description: Usuário não encontrado
+  /roles:
+    post:
+      summary: Criar uma nova role
+      security:
+        - bearerAuth: []
+      tags:
+        - Roles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        '201':
+          description: Role criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Erro de validação
+    get:
+      summary: Listar todas as roles
+      security:
+        - bearerAuth: []
+      tags:
+        - Roles
+      responses:
+        '200':
+          description: Lista de roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+  /roles/id/{id}:
+    get:
+      summary: Obter uma role por ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Roles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Role encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '404':
+          description: Role não encontrada
+    put:
+      summary: Atualizar uma role
+      security:
+        - bearerAuth: []
+      tags:
+        - Roles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        '200':
+          description: Role atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Erro de validação
+        '404':
+          description: Role não encontrada
+    delete:
+      summary: Remover uma role
+      security:
+        - bearerAuth: []
+      tags:
+        - Roles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Role removida com sucesso
+        '404':
+          description: Role não encontrada
+  /permissao:
+    post:
+      summary: Criar uma nova permissão
+      security:
+        - bearerAuth: []
+      tags:
+        - Permissões
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        '201':
+          description: Permissão criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permissao'
+        '400':
+          description: Erro de validação
+    get:
+      summary: Listar todas as permissões
+      security:
+        - bearerAuth: []
+      tags:
+        - Permissões
+      responses:
+        '200':
+          description: Lista de permissões
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permissao'
+  /permissao/id/{id}:
+    get:
+      summary: Obter uma permissão por ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Permissões
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Permissão encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permissao'
+        '404':
+          description: Permissão não encontrada
+    put:
+      summary: Atualizar uma permissão
+      security:
+        - bearerAuth: []
+      tags:
+        - Permissões
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        '200':
+          description: Permissão atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permissao'
+        '400':
+          description: Erro de validação
+        '404':
+          description: Permissão não encontrada
+    delete:
+      summary: Remover uma permissão
+      security:
+        - bearerAuth: []
+      tags:
+        - Permissões
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Permissão removida com sucesso
+        '404':
+          description: Permissão não encontrada
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        usuario_roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        usuario_permissoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permissao'
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        descricao:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+    Permissao:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        descricao:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
