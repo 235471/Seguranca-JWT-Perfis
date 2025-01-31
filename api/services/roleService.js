@@ -31,7 +31,7 @@ class RoleService extends Services {
 
   async buscarTodos(query) {
     try {
-      const roleList = this.getAllRegisters(undefined, undefined, query);
+      const roleList = await this.getAllRegisters(undefined, undefined, query);
       return roleList;
     } catch (error) {
       throw error;
@@ -40,7 +40,7 @@ class RoleService extends Services {
 
   async buscarPorId(id) {
     try {
-      const role = this.getOneById(id);
+      const role = await this.getOneById(id);
 
       return role;
     } catch (error) {
@@ -52,7 +52,7 @@ class RoleService extends Services {
     try {
       await this.getOneById(id);
 
-      const updatedRole = this.updateRegister(dto, { id });
+      const updatedRole = await this.updateRegister(dto, { id });
 
       return updatedRole;
     } catch (error) {
@@ -62,7 +62,7 @@ class RoleService extends Services {
 
   async remover(id) {
     try {
-      const isDeleted = this.deleteRegister({ id });
+      const isDeleted = await this.deleteRegister({ id });
 
       if (isDeleted) return true;
     } catch (error) {

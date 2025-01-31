@@ -37,7 +37,7 @@ class UsuarioService extends Services {
   async buscarTodos(query) {
     try {
       const includeOptions = generateUserIncludeOptions(true);
-      const userList = this.getAllRegisters({}, includeOptions, query);
+      const userList = await this.getAllRegisters({}, includeOptions, query);
       return userList;
     } catch (error) {
       throw error;
@@ -46,7 +46,7 @@ class UsuarioService extends Services {
 
   async buscarPorId(id) {
     try {
-      const user = this.getOneById(id);
+      const user = await this.getOneById(id);
 
       return user;
     } catch (error) {
@@ -58,7 +58,7 @@ class UsuarioService extends Services {
     try {
       await this.getOneById(id);
 
-      const updatedUser = this.updateRegister(dto, { id });
+      const updatedUser = await this.updateRegister(dto, { id });
 
       return updatedUser;
     } catch (error) {
@@ -68,7 +68,7 @@ class UsuarioService extends Services {
 
   async remover(id) {
     try {
-      const isDeleted = this.deleteRegister({ id });
+      const isDeleted = await this.deleteRegister({ id });
 
       if (isDeleted) return true;
     } catch (error) {

@@ -17,7 +17,8 @@ class Services {
 
       return records;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -30,7 +31,8 @@ class Services {
       }
       return records;
     } catch (error) {
-      handleError(error);
+      const handledError = handleError(error);
+      throw handledError;
     }
   }
 
@@ -43,7 +45,8 @@ class Services {
       }
       return record;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -62,7 +65,8 @@ class Services {
 
       return record;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -92,7 +96,8 @@ class Services {
 
       return record;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -105,7 +110,8 @@ class Services {
       }
       return result;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -115,7 +121,8 @@ class Services {
       const newRegister = await dataSource[this.model].create(register);
       return newRegister;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -131,7 +138,8 @@ class Services {
       }
       return updatedRegisterList;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 
@@ -146,7 +154,8 @@ class Services {
       await register.destroy();
       return true;
     } catch (error) {
-      handleError(error); // Chama a função para tratar o erro
+      const handledError = handleError(error); // Chama a função para tratar o erro
+      throw handledError;
     }
   }
 }

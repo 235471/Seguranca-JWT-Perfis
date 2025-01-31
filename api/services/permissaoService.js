@@ -29,7 +29,7 @@ class PermissaoService extends Services {
 
   async buscarTodos(query) {
     try {
-      const userList = this.getAllRegisters(undefined, undefined, query);
+      const userList = await this.getAllRegisters(undefined, undefined, query);
       return userList;
     } catch (error) {
       throw error;
@@ -38,7 +38,7 @@ class PermissaoService extends Services {
 
   async buscarPorId(id) {
     try {
-      const user = this.getOneById(id);
+      const user = await this.getOneById(id);
 
       return user;
     } catch (error) {
@@ -50,7 +50,7 @@ class PermissaoService extends Services {
     try {
       await this.getOneById(id);
 
-      const updatedUser = this.updateRegister(dto, { id });
+      const updatedUser = await this.updateRegister(dto, { id });
 
       return updatedUser;
     } catch (error) {
@@ -60,7 +60,7 @@ class PermissaoService extends Services {
 
   async remover(id) {
     try {
-      const isDeleted = this.deleteRegister({ id });
+      const isDeleted = await this.deleteRegister({ id });
 
       if (isDeleted) return true;
     } catch (error) {
